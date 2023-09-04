@@ -1,0 +1,16 @@
+/.vs
+/src/Gradebook/bin
+/src/Gradebook/obj/Debug
+/src/Gradebook/obj/Gradebook.csproj.nuget.g.props
+/src/Gradebook/obj/Gradebook.csproj.nuget.g.targets
+/src/Gradebook/obj/Gradebook.csproj.nuget.dgspec.json
+/src/Gradebook/obj/project.assets.json
+/src/Gradebook/obj/project.nuget.cache
+
+/test/GradeBook.Tests/bin
+/test/GradeBook.Tests/obj/Debug
+/test/GradeBook.Tests/obj/GradeBook.Tests.csproj.nuget.dgspec.json
+/test/GradeBook.Tests/obj/GradeBook.Tests.csproj.nuget.g.props
+/test/GradeBook.Tests/obj/GradeBook.Tests.csproj.nuget.g.targets
+/test/GradeBook.Tests/obj/project.assets.json
+/test/GradeBook.Tests/obj/project.nuget.cache

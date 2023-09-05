@@ -6,19 +6,30 @@ namespace Gradebook
     {
         static void Main(string[] args)
         {
-            var book=new Book("John Grade Book");
+            var book = new Book("John Grade Book");
             
             do
             {
                 Console.WriteLine("Enter Grade or 'q' to quit: ");
-                string grade = Console.ReadLine();
+                string? grade = Console.ReadLine();
 
                 if (grade == "q")
                 {
                     break;
                 }
 
-                book.AddGrade(double.Parse(grade));
+                try
+                {
+                    book.AddGrade(double.Parse(grade));
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             } while (true);
 
             book.ShowStatistics();

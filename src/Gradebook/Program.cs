@@ -7,12 +7,20 @@ namespace Gradebook
         static void Main(string[] args)
         {
             var book=new Book("John Grade Book");
-            book.AddGrade(20.2);
-            book.AddGrade(12.2);
-            book.AddGrade(30.2);
-            book.AddGrade(40.2);
+            
+            do
+            {
+                Console.WriteLine("Enter Grade or 'q' to quit: ");
+                string grade = Console.ReadLine();
 
-            book.PrintGrades();
+                if (grade == "q")
+                {
+                    break;
+                }
+
+                book.AddGrade(double.Parse(grade));
+            } while (true);
+
             book.ShowStatistics();
             //Console.ReadLine();
         }

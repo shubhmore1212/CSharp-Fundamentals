@@ -5,12 +5,12 @@ namespace Gradebook
     public class Book
     {
         private List<double> grades;
-        private string name;
+        public string Name;
         
         public Book(string name)
         {
             grades=new List<double>();
-            this.name=name;
+            this.Name=name;
         }
 
         public void AddGrade(double grade)
@@ -52,8 +52,9 @@ namespace Gradebook
 
         public void ShowStatistics()
         {
-            Console.WriteLine($"Highest Grade: {GetMaxGrade()} \nLowest Grade: {GetMinGrade()}");
-            Console.WriteLine($"Average of Gardes is {GetAverageGrades()}");
+            var result=GetStatistics();
+            Console.WriteLine($"Highest Grade: {result.High} \nLowest Grade: {result.Low}");
+            Console.WriteLine($"Average of Gardes is {result.Average}");
         }
 
         public void PrintGrades()

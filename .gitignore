@@ -14,3 +14,6 @@
 /test/GradeBook.Tests/obj/GradeBook.Tests.csproj.nuget.g.targets
 /test/GradeBook.Tests/obj/project.assets.json
 /test/GradeBook.Tests/obj/project.nuget.cache
+
+#Ignoring Practise files
+/ConsoleApp1

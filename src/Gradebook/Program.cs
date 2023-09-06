@@ -6,14 +6,25 @@ namespace Gradebook
     {
         static void Main(string[] args)
         {
-            var book = new Book("John Grade Book");
-            
+            var book = new DiskBook("John Grade Book");
+
+            EnterGrades(book);
+
+            var result = book.GetStatistics();
+            Console.WriteLine($"Highest Grade: {result.High} \nLowest Grade: {result.Low}");
+            Console.WriteLine($"Average of Grades is {result.Average}");
+            Console.WriteLine($"The Grade is {result.Grade}");
+            Console.ReadLine();
+        }
+
+        private static void EnterGrades(IBook book)
+        {
             do
             {
                 Console.WriteLine("Enter Grade or 'q' to quit: ");
                 string? grade = Console.ReadLine();
 
-                if (grade == "q")
+                if (grade == "q" || string.IsNullOrEmpty(grade))
                 {
                     break;
                 }
@@ -31,9 +42,6 @@ namespace Gradebook
                     Console.WriteLine(ex.Message);
                 }
             } while (true);
-
-            book.ShowStatistics();
-            //Console.ReadLine();
         }
     }
 }

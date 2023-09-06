@@ -1,16 +1,73 @@
 using System;
+using System.IO;
 
 namespace Gradebook
 {
-    public class Book
+    public class NamedObject
+    {
+        public NamedObject(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; set; }
+    }
+
+    public interface IBook
+    {
+        void AddGrade(double grade);
+        Statistics GetStatistics();
+        string Name { get; }
+    }
+
+    public abstract class Book : NamedObject, IBook
+    {
+        protected Book(string name) : base(name)
+        {
+        }
+
+        public abstract void AddGrade(double grade);
+        public abstract Statistics GetStatistics();
+    }
+
+    public class DiskBook : Book
+    {
+        public DiskBook(string name) : base(name)
+        {
+        }
+
+        public override void AddGrade(double grade)
+        {
+            using (var writer = File.AppendText($"{Name}.txt"))
+            {
+                writer.WriteLine(grade);
+            }
+        }
+
+        public override Statistics GetStatistics()
+        {
+            var result = new Statistics();
+
+            using (var reader = File.OpenText($"{Name}.txt"))
+            {
+                var line = "";
+                while ((line = reader.ReadLine()) != null)
+                {
+                    result.Add(double.Parse(line));
+                }
+            }
+
+            return result;
+        }
+    }
+
+    public class InMemoryBook : Book
     {
         private List<double> grades;
-        public string Name { get; set; }
 
-        public Book(string name)
+        public InMemoryBook(string name) : base(name)
         {
-            grades=new List<double>();
-            this.Name=name;
+            grades = new List<double>();
         }
 
         public void AddGrade(char letter)
@@ -35,9 +92,9 @@ namespace Gradebook
             }
         }
 
-        public void AddGrade(double grade)
+        public override void AddGrade(double grade)
         {
-            if(grade>=0 && grade <= 100)
+            if (grade >= 0 && grade <= 100)
             {
                 this.grades.Add(grade);
             }
@@ -47,73 +104,23 @@ namespace Gradebook
             }
         }
 
-        private double GetAverageGrades()
+        public override Statistics GetStatistics()
         {
-            return this.grades.Average();
-        }
+            var result = new Statistics();
 
-        private double GetMaxGrade()
-        {
-            double highGrade = double.MinValue;
-            foreach(var grade in this.grades)
+            foreach (var grade in grades)
             {
-                highGrade=Math.Max(highGrade, grade);
+                result.Add(grade);
             }
-            return highGrade;
-        }
 
-        private double GetMinGrade()
-        {
-            double lowGrade = double.MaxValue;
-            foreach (var grade in this.grades)
-            {
-                lowGrade = Math.Min(lowGrade, grade);
-            }
-            return lowGrade;
-        }
-
-        private char GetGrade(double TotalMarks)
-        {
-            switch (TotalMarks)
-            {
-                case var m when m >= 90.0:
-                    return 'A';
-
-                case var m when m >= 80.0:
-                    return 'B';
-
-                case var m when m >= 70.0:
-                    return 'C';
-
-                case var m when m > 60.0:
-                    return 'D';
-
-                default:
-                    return 'F';
-            }
-        }
-
-        public Statistics GetStatistics()
-        {
-            return new Statistics(Average:GetAverageGrades(),
-                Low: GetMinGrade(),
-                High: GetMaxGrade(),
-                Grade: GetGrade(GetAverageGrades()));
-        }
-
-        public void ShowStatistics()
-        {
-            var result=GetStatistics();
-            Console.WriteLine($"Highest Grade: {result.High} \nLowest Grade: {result.Low}");
-            Console.WriteLine($"Average of Grades is {result.Average}");
-            Console.WriteLine($"The Grade is {result.Grade}");
+            return result;
         }
 
         public void PrintGrades()
         {
-            foreach(var grade in grades)
+            foreach (var grade in grades)
             {
-               Console.WriteLine(grade);
+                Console.WriteLine(grade);
             }
         }
     }
